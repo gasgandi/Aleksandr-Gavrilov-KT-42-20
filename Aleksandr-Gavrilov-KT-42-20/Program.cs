@@ -1,5 +1,10 @@
+using Aleksandr_Gavrilov_KT_42_20.Database;
+using Aleksandr_Gavrilov_KT_42_20.ServiceExtensions;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using NLog.Web;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +20,11 @@ try
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
+    builder.Services.AddDbContext<StudentDbContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+    builder.Services.AddServices();
+
     var app = builder.Build();
 
     // Configure the HTTP request pipeline.
@@ -23,6 +33,8 @@ try
         app.UseSwagger();
         app.UseSwaggerUI();
     }
+
+    app.UseMiddleware<ExceptionHandlerMiddleware>();
 
     app.UseAuthorization();
 
