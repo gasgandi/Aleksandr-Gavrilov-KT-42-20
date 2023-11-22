@@ -1,10 +1,9 @@
 using Aleksandr_Gavrilov_KT_42_20.Database;
-using Aleksandr_Gavrilov_KT_42_20.ServiceExtensions;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using NLog.Web;
-
+using Aleksandr_Gavrilov_KT_42_20.ServiceExtensions;
+using Aleksandr_Gavrilov_KT_42_20.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +13,7 @@ try
 {
     builder.Logging.ClearProviders();
     builder.Host.UseNLog();
+    // Add services to the container.
 
     builder.Services.AddControllers();
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -41,7 +41,6 @@ try
     app.MapControllers();
 
     app.Run();
-
 }
 catch (Exception ex)
 {
