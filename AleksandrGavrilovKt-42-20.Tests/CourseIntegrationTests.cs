@@ -68,7 +68,7 @@ namespace AleksandrGavrilovKt_42_20.Tests
             // Act
             var filter = new CourseGroupFilter
             {
-                GroupName = "KT-31-20"
+                GroupName = "KT-41-20"
             };
             var Result = await courseService.GetCoursesByGroupAsync(filter, CancellationToken.None);
 

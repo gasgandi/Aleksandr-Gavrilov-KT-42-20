@@ -70,7 +70,7 @@ namespace AleksandrGavrilovKt_42_20.Tests
             await ctx.SaveChangesAsync();
 
             // Act
-            var filter = new StudentGroupFilter
+            var filter = new StudentGroupFilters
             {
                 GroupName = "KT-31-20"
             };

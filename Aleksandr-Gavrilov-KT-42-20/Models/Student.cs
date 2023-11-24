@@ -14,5 +14,12 @@ namespace Aleksandr_Gavrilov_KT_42_20.Models
         public Group? Group { get; set; }
         //public Group? Group { get; set; }
 
+        public string FIO
+        {
+            get
+            {
+                return FirstName + " " + LastName + " " + MiddleName;
+            }
+        }
     }
 }

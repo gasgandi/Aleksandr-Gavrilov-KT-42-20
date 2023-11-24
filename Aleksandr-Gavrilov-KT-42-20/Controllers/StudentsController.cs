@@ -1,6 +1,7 @@
 ﻿using Aleksandr_Gavrilov_KT_42_20.Database;
 using Aleksandr_Gavrilov_KT_42_20.Filters.CourseFilters;
 using Aleksandr_Gavrilov_KT_42_20.Filters.StudentFilters;
+using Aleksandr_Gavrilov_KT_42_20.Filters.StudentFioFilters;
 using Aleksandr_Gavrilov_KT_42_20.Interfaces.StudentsInterfaces;
 using Aleksandr_Gavrilov_KT_42_20.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -24,11 +25,19 @@ namespace Aleksandr_Gavrilov_KT_42_20.Controllers
             _context = context;
         }
 
-     
+
         [HttpPost(Name = "GetStudentsByGroup")]
-        public async Task<IActionResult> GetStudentsByGroupAsync(StudentGroupFilter filter, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> GetStudentsByGroupAsync(StudentGroupFilters filter, CancellationToken cancellationToken = default)
         {
             var students = await _studentService.GetStudentsByGroupAsync(filter, cancellationToken);
+
+            return Ok(students);
+        }
+
+        [HttpPost("GetStudentsByFio")]
+        public async Task<IActionResult> GetStudentsByFioAsync(StudentFioFilters filter, CancellationToken cancellationToken = default)
+        {
+            var students = await _studentService.GetStudentsByFioAsync(filter, cancellationToken);
 
             return Ok(students);
         }
@@ -65,6 +74,21 @@ namespace Aleksandr_Gavrilov_KT_42_20.Controllers
             return Ok();
         }
 
+        [HttpDelete("DeleteStudent")]
+        public IActionResult DeleteStudent(int id, Aleksandr_Gavrilov_KT_42_20.Models.Student updatedStudent)
+        {
+            var existingStudent = _context.Students.FirstOrDefault(g => g.StudentId == id);
+
+            if (existingStudent == null)
+            {
+                return NotFound();
+            }
+            _context.Students.Remove(existingStudent);
+            _context.SaveChanges();
+
+            return Ok();
+        }
+
         [HttpPost("AddGroup", Name = "AddGroup")]
         public IActionResult CreateGroup([FromBody] Aleksandr_Gavrilov_KT_42_20.Models.Group group)
         {
@@ -79,7 +103,7 @@ namespace Aleksandr_Gavrilov_KT_42_20.Controllers
         }
 
         [HttpPut("EditGroup")]
-        public IActionResult UpdateGroup(string groupname, [FromBody] StudentGroupFilter updatedGroup)
+        public IActionResult UpdateGroup(string groupname, [FromBody] StudentGroupFilters updatedGroup)
         {
             var existingGroup = _context.Groups.FirstOrDefault(g => g.GroupName == groupname);
 
@@ -108,5 +132,6 @@ namespace Aleksandr_Gavrilov_KT_42_20.Controllers
 
             return Ok();
         }
+        
     }
 }
